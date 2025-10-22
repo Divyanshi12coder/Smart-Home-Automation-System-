@@ -15,12 +15,18 @@ Automate lights, temperature, door locks, security cameras, and more using this 
 
 🛠️ Tech Stack
 Layer	Technology Used
-Hardware	 ESP32 
-Communication	MQTT / HTTP 
-Backend	Node.js 
-Frontend 	React 
-Database	Firebase 
-Automation Flows	Node-RED / Home Assistant
+
+Hardware :	 ESP32 
+
+Communication :	MQTT / HTTP 
+
+Backend :	Node.js 
+
+Frontend : 	React 
+
+Database :	Firebase 
+
+Automation : Flows	Node-RED / Home Assistant
 
 🤖 Example Use Cases
 
