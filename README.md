@@ -79,6 +79,3 @@ If you like this project:
 
 📱 GitHub: @Divyanshi12coder
 
-Would you like me to:
-✅ Add circuit diagrams?
-✅ Include screenshots?
