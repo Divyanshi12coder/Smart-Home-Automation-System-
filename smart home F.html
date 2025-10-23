@@ -1,0 +1,89 @@
+import React, { useEffect, useState, useRef } from 'react';
+<div className="flex items-center justify-between">
+<h1 className="text-2xl font-bold">Smart Home Dashboard — ESP32 (React)</h1>
+<div className="text-sm">
+<span className={`px-3 py-1 rounded-full ${connected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+{connected ? 'Connected' : 'Disconnected'}
+</span>
+</div>
+</div>
+<p className="text-sm text-slate-600 mt-1">Connects to MQTT over WebSocket. Replace <code>REACT_APP_MQTT_WS_URL</code> in your .env.</p>
+</header>
+
+
+<main className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+{/* Left: Devices */}
+<section className="lg:col-span-2 bg-white p-4 rounded-2xl shadow">
+<h2 className="text-lg font-semibold mb-4">Devices</h2>
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+{Object.values(displayDevices).map((dev) => (
+<motion.div key={dev.id} whileHover={{ scale: 1.02 }} className="p-4 rounded-xl border">
+<div className="flex items-start justify-between">
+<div>
+<div className="text-sm text-slate-500">{dev.id}</div>
+<div className="font-semibold text-lg">{dev.name || dev.id}</div>
+<div className="text-sm text-slate-600 mt-2">State: <code>{JSON.stringify(dev.state)}</code></div>
+</div>
+<div className="flex flex-col items-end">
+{/* Simple toggle for boolean "on" state */}
+{'on' in (dev.state || {}) ? (
+<button onClick={() => toggleDevice(dev.id)} className="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">
+{dev.state.on ? 'Turn Off' : 'Turn On'}
+</button>
+) : (
+<button onClick={() => publish(`home/devices/${dev.id}/set`, { action: 'toggle' })} className="px-4 py-2 rounded-full bg-slate-100 hover:bg-slate-200">
+Send
+</button>
+)}
+<div className="text-xs text-slate-500 mt-2">Topic: <span className="font-mono">home/devices/{dev.id}/set</span></div>
+</div>
+</div>
+</motion.div>
+))}
+</div>
+</section>
+
+
+{/* Right: Sensors + Logs */}
+<aside className="bg-white p-4 rounded-2xl shadow flex flex-col gap-4">
+<div>
+<h3 className="text-md font-semibold mb-2">Sensor (Recent)</h3>
+<div className="h-48">
+<ResponsiveContainer width="100%" height="100%">
+<LineChart data={sensorHistory.slice().reverse()}>
+<XAxis dataKey="time" hide />
+<YAxis />
+<Tooltip />
+<Line type="monotone" dataKey="value" stroke="#8884d8" strokeWidth={2} dot={false} />
+</LineChart>
+</ResponsiveContainer>
+</div>
+</div>
+
+
+<div>
+<h3 className="text-md font-semibold mb-2">Logs</h3>
+<div className="max-h-40 overflow-auto text-xs bg-slate-50 p-2 rounded">
+{logs.length === 0 ? <div className="text-slate-500">No logs yet</div> : (
+<ul>
+{logs.map((l, i) => (
+<li key={i} className="py-1 border-b last:border-b-0">[{l.ts}] {l.text}</li>
+))}
+</ul>
+)}
+</div>
+</div>
+
+
+<div className="flex gap-2">
+<button onClick={() => publish('home/automation/global', { cmd: 'all_off' })} className="flex-1 py-2 rounded bg-red-50 hover:bg-red-100">All Off</button>
+<button onClick={() => publish('home/automation/global', { cmd: 'all_on' })} className="flex-1 py-2 rounded bg-green-50 hover:bg-green-100">All On</button>
+</div>
+</aside>
+</main>
+
+
+<footer className="max-w-6xl mx-auto mt-6 text-sm text-slate-500">ESP32 Smart Home • MQTT topics start with <code>home/</code></footer>
+</div>
+);
+}
