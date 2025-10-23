@@ -1,0 +1,14 @@
+smart-home-automation-esp32/
+├── hardware/
+│   ├── esp32_code/        # Arduino/PlatformIO code
+│   ├── circuit_diagram.png
+│   └── components_list.md
+├── backend/
+│   ├── api/
+│   └── mqtt_broker/
+├── app/
+│   ├── src/
+│   └── screenshots/
+├── automation_flows/
+│   └── node-red-flows.json
+└── README.md
